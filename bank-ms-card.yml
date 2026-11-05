@@ -1,0 +1,10 @@
+server:
+  port: 8082
+
+springdoc:
+  swagger-ui:
+    url: /openapi.yaml
+
+logging:
+  level:
+    com.nttdata.bank_ms_card: INFO

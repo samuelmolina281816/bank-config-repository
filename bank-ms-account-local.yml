@@ -1,0 +1,13 @@
+spring:
+  r2dbc:
+    url: ${ACCOUNT_R2DBC_URL:r2dbc:postgresql://localhost:5433/bank_account_dev}
+    username: ${ACCOUNT_DB_USERNAME}
+    password: ${ACCOUNT_DB_PASSWORD}
+  sql:
+    init:
+      mode: ${ACCOUNT_SCHEMA_INIT_MODE:always}
+      schema-locations: classpath:schema.sql
+
+customer:
+  api:
+    base-url: ${CUSTOMER_API_BASE_URL:http://localhost:8080}

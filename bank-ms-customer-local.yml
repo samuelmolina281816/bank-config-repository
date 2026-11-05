@@ -1,0 +1,11 @@
+spring:
+  r2dbc:
+    url: ${CUSTOMER_R2DBC_URL:r2dbc:postgresql://localhost:5432/bank_customer_dev}
+    username: ${CUSTOMER_DB_USERNAME}
+    password: ${CUSTOMER_DB_PASSWORD}
+  sql:
+    init:
+      mode: ${CUSTOMER_SCHEMA_INIT_MODE:always}
+      schema-locations: classpath:schema.sql
+      # Conservar solo si schema.sql usa @@ como separador real.
+      separator: "@@"

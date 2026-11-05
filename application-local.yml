@@ -1,0 +1,4 @@
+# Overrides comunes del entorno local.
+logging:
+  level:
+    org.springframework.r2dbc: INFO

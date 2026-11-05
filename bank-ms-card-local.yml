@@ -1,0 +1,12 @@
+spring:
+  r2dbc:
+    url: ${CARD_R2DBC_URL:r2dbc:postgresql://localhost:5435/bank_card_dev}
+    username: ${CARD_DB_USERNAME}
+    password: ${CARD_DB_PASSWORD}
+  sql:
+    init:
+      mode: ${CARD_SCHEMA_INIT_MODE:always}
+      schema-locations: classpath:schema.sql
+
+bank-ms-customer:
+  eligibility-url: ${CUSTOMER_ELIGIBILITY_URL:http://localhost:8080/api/v1/customer/documents}

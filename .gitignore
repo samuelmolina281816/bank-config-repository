@@ -1,0 +1,17 @@
+# Secrets and local overrides
+.env
+.env.*
+*.secret.yml
+*.secrets.yml
+application-secrets.yml
+
+# IDE and OS
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Temporary files and logs
+*.log
+*.tmp

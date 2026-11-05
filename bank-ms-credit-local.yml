@@ -1,0 +1,12 @@
+spring:
+  r2dbc:
+    url: ${CREDIT_R2DBC_URL:r2dbc:postgresql://localhost:5434/bank_credit_dev}
+    username: ${CREDIT_DB_USERNAME}
+    password: ${CREDIT_DB_PASSWORD}
+  sql:
+    init:
+      mode: ${CREDIT_SCHEMA_INIT_MODE:always}
+      schema-locations: classpath:schema.sql
+
+customer:
+  eligibility-url: ${CUSTOMER_ELIGIBILITY_URL:http://localhost:8080/api/v1/customer/documents}

@@ -1,0 +1,13 @@
+server:
+  port: 8083
+
+springdoc:
+  swagger-ui:
+    url: /openapi.yaml
+
+customer:
+  timeout: ${CUSTOMER_TIMEOUT:2s}
+
+logging:
+  level:
+    com.nttdata.bank_ms_credit: INFO

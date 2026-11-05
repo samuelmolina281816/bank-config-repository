@@ -1,0 +1,23 @@
+server:
+  port: 8081
+
+springdoc:
+  swagger-ui:
+    url: /openapi.yaml
+
+account:
+  rules:
+    savings:
+      maximum-monthly-movements: ${SAVINGS_MAXIMUM_MONTHLY_MOVEMENTS:20}
+    fixed-term:
+      allowed-operation-day: ${FIXED_TERM_ALLOWED_OPERATION_DAY:1}
+    checking:
+      maintenance-fee:
+        enabled: false
+        amount: 0.00
+        period: MONTHLY
+  business-zone: ${ACCOUNT_BUSINESS_ZONE:America/Lima}
+
+logging:
+  level:
+    com.nttdata.bank_ms_account: INFO
