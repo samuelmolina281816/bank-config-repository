@@ -11,3 +11,14 @@ spring:
 customer:
   api:
     base-url: ${CUSTOMER_API_BASE_URL:http://localhost:8080}
+
+eureka:
+  client:
+    enabled: true
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}

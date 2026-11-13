@@ -9,3 +9,14 @@ spring:
       schema-locations: classpath:schema.sql
       # Conservar solo si schema.sql usa @@ como separador real.
       separator: "@@"
+
+eureka:
+  client:
+    enabled: true
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
