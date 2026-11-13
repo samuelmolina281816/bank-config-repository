@@ -1,0 +1,60 @@
+server:
+  port: ${SERVER_PORT:8084}
+
+eureka:
+  client:
+    enabled: true
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: bank-ms-customer
+              uri: lb://bank-ms-customer
+              predicates:
+                - Path=/api/v1/customer/**,/api/v1/customers/**
+
+            - id: bank-ms-account
+              uri: lb://bank-ms-account
+              predicates:
+                - Path=/api/v1/account/**,/api/v1/accounts/**
+
+            - id: bank-ms-card
+              uri: lb://bank-ms-card
+              predicates:
+                - Path=/api/v1/card/**,/api/v1/cards/**
+
+            - id: bank-ms-credit
+              uri: lb://bank-ms-credit
+              predicates:
+                - Path=/api/v1/credit/**,/api/v1/credits/**
+
+          httpclient:
+            connect-timeout: 2000
+            response-timeout: 2s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+  endpoint:
+    health:
+      probes:
+        enabled: true
+    gateway:
+      access: read-only
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: INFO
