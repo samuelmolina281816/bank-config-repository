@@ -1,0 +1,125 @@
+# Local development only. Replace default credentials before shared environments.
+# HashiCorp Vault and Config Server will be integrated in a later iteration.
+name: banking-phase-i-databases
+services:
+  vault:
+    image: hashicorp/vault:1.18
+    container_name: bank-vault
+    command:
+      - server
+      - -dev
+      - -dev-listen-address=0.0.0.0:8200
+      - -dev-root-token-id=${VAULT_TOKEN:-root}
+    ports:
+      - ${VAULT_PORT:-8200}:8200
+    networks:
+      - bank-network
+  customer-db:
+    image: postgres:16-alpine
+    container_name: bank-customer-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${CUSTOMER_DB_NAME:-bank_customer_dev}
+      POSTGRES_USER: ${CUSTOMER_DB_USER:-bank_customer_user}
+      POSTGRES_PASSWORD: ${CUSTOMER_DB_PASSWORD:-bank_customer_password}
+      TZ: ${BANK_TIME_ZONE:-America/Lima}
+      PGTZ: ${BANK_TIME_ZONE:-America/Lima}
+    ports:
+    - ${CUSTOMER_DB_PORT:-5432}:5432
+    volumes:
+    - customer-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks:
+    - bank-network
+  account-db:
+    image: postgres:16-alpine
+    container_name: bank-account-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${ACCOUNT_DB_NAME:-bank_account_dev}
+      POSTGRES_USER: ${ACCOUNT_DB_USER:-bank_account_user}
+      POSTGRES_PASSWORD: ${ACCOUNT_DB_PASSWORD:-bank_account_password}
+      TZ: ${BANK_TIME_ZONE:-America/Lima}
+      PGTZ: ${BANK_TIME_ZONE:-America/Lima}
+    ports:
+    - ${ACCOUNT_DB_PORT:-5433}:5432
+    volumes:
+    - account-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks:
+    - bank-network
+  credit-db:
+    image: postgres:16-alpine
+    container_name: bank-credit-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${CREDIT_DB_NAME:-bank_credit_dev}
+      POSTGRES_USER: ${CREDIT_DB_USER:-bank_credit_user}
+      POSTGRES_PASSWORD: ${CREDIT_DB_PASSWORD:-bank_credit_password}
+      TZ: ${BANK_TIME_ZONE:-America/Lima}
+      PGTZ: ${BANK_TIME_ZONE:-America/Lima}
+    ports:
+    - ${CREDIT_DB_PORT:-5434}:5432
+    volumes:
+    - credit-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks:
+    - bank-network
+  card-db:
+    image: postgres:16-alpine
+    container_name: bank-card-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${CARD_DB_NAME:-bank_card_dev}
+      POSTGRES_USER: ${CARD_DB_USER:-bank_card_user}
+      POSTGRES_PASSWORD: ${CARD_DB_PASSWORD:-bank_card_password}
+      TZ: ${BANK_TIME_ZONE:-America/Lima}
+      PGTZ: ${BANK_TIME_ZONE:-America/Lima}
+    ports:
+    - ${CARD_DB_PORT:-5435}:5432
+    volumes:
+    - card-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+      - CMD-SHELL
+      - pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks:
+    - bank-network
+volumes:
+  customer-db-data:
+    name: bank-customer-db-data
+  account-db-data:
+    name: bank-account-db-data
+  credit-db-data:
+    name: bank-credit-db-data
+  card-db-data:
+    name: bank-card-db-data
+networks:
+  bank-network:
+    name: bank-network
+    driver: bridge
