@@ -11,6 +11,38 @@ spring:
 customer:
   api:
     base-url: ${CUSTOMER_API_BASE_URL:http://localhost:8080}
+    
+card:
+  api:
+    base-url: ${CARD_API_BASE_URL:http://localhost:8082}
+
+account:
+  business-zone: ${ACCOUNT_BUSINESS_ZONE:America/Lima}
+  resilience:
+    customer:
+      timeout: ${CUSTOMER_API_TIMEOUT:2s}
+      max-attempts: ${CUSTOMER_API_MAX_ATTEMPTS:3}
+    card:
+      timeout: ${CARD_API_TIMEOUT:2s}
+      max-attempts: ${CARD_API_MAX_ATTEMPTS:3}
+  rules:
+    minimum-opening:
+      savings: ${ACCOUNT_MIN_OPENING_SAVINGS:0.00}
+      savings-vip: ${ACCOUNT_MIN_OPENING_SAVINGS_VIP:0.00}
+      checking: ${ACCOUNT_MIN_OPENING_CHECKING:0.00}
+      checking-pyme: ${ACCOUNT_MIN_OPENING_CHECKING_PYME:0.00}
+      fixed-term: ${ACCOUNT_MIN_OPENING_FIXED_TERM:0.00}
+    vip:
+      minimum-monthly-average: ${ACCOUNT_VIP_MINIMUM_MONTHLY_AVERAGE:0.00}
+    transactions:
+      monthly-free-count: ${ACCOUNT_MONTHLY_FREE_TRANSACTIONS:20}
+      excess-fee: ${ACCOUNT_EXCESS_TRANSACTION_FEE:0.00}
+    fixed-term:
+      allowed-operation-day: ${FIXED_TERM_ALLOWED_OPERATION_DAY:1}
+    checking:
+      maintenance-fee:
+        amount: ${CHECKING_MAINTENANCE_FEE_AMOUNT:0.00}
+        period: ${CHECKING_MAINTENANCE_FEE_PERIOD:MONTHLY}
 
 eureka:
   client:
